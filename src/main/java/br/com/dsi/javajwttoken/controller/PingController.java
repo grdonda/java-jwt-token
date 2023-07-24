@@ -1,22 +1,24 @@
-package br.com.dsi.javajwttoken.ping;
+package br.com.dsi.javajwttoken.controller;
 
-import br.com.dsi.javajwttoken.dto.ResponseDTO;
-import br.com.dsi.javajwttoken.ping.dto.PingResponseDTO;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import br.com.dsi.javajwttoken.domain.ping.dto.PingResponseDTO;
+import br.com.dsi.javajwttoken.infra.response.ResponseDto;
 
 @RestController
 @RequestMapping("/ping")
 public class PingController {
 
     @GetMapping
-    public ResponseEntity<ResponseDTO> ping() {
+    public ResponseEntity<ResponseDto<PingResponseDTO>> ping() {
+        
         LocalDateTime dateTimeNow = new Date()
                 .toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -24,7 +26,7 @@ public class PingController {
 
         PingResponseDTO pingResponseDTO = new PingResponseDTO("pong");
 
-        ResponseDTO response = new ResponseDTO(pingResponseDTO, dateTimeNow.toString());
+        ResponseDto<PingResponseDTO> response = new ResponseDto<>(pingResponseDTO, dateTimeNow.toString());
         return ResponseEntity.ok(response);
     }
 }
